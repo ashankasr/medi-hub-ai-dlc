@@ -1,0 +1,24 @@
+name: "Task: Documentation"
+description: "Documentation work for a User Story."
+title: "[Task][Docs] "
+labels: ["task:documentation"]
+body:
+  - type: input
+    id: parent-story
+    attributes:
+      label: Parent User Story
+      description: "Issue number of the parent User Story (e.g. #4). After creating this issue, also add it as a sub-issue of that story via the sidebar."
+    validations:
+      required: true
+  - type: textarea
+    id: docs-scope
+    attributes:
+      label: What documentation needs to be created or updated
+    validations:
+      required: true
+  - type: textarea
+    id: definition-of-done
+    attributes:
+      label: Definition of Done
+    validations:
+      required: false

@@ -1,0 +1,30 @@
+name: "User Story"
+description: "A single user-facing requirement within a Feature."
+title: "[User Story] "
+labels: ["type:user-story"]
+body:
+  - type: input
+    id: parent-feature
+    attributes:
+      label: Parent Feature
+      description: "Issue number of the parent Feature (e.g. #3). After creating this issue, also add it as a sub-issue of that Feature via the sidebar."
+    validations:
+      required: true
+  - type: textarea
+    id: story
+    attributes:
+      label: Story
+      description: "As a <role>, I want <capability>, so that <benefit>."
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: Conditions that must be true for this story to be considered done.
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        Once this story is created, break it down into its four task issues (Implementation, Security, Test, Documentation) and add each as a sub-issue of this story.

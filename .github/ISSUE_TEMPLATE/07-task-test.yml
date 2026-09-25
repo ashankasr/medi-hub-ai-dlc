@@ -1,0 +1,31 @@
+name: "Task: Test"
+description: "Test coverage work for a User Story."
+title: "[Task][Test] "
+labels: ["task:test"]
+body:
+  - type: input
+    id: parent-story
+    attributes:
+      label: Parent User Story
+      description: "Issue number of the parent User Story (e.g. #4). After creating this issue, also add it as a sub-issue of that story via the sidebar."
+    validations:
+      required: true
+  - type: textarea
+    id: test-scope
+    attributes:
+      label: Test Scope
+      description: Unit, integration, end-to-end, manual QA, etc.
+    validations:
+      required: true
+  - type: textarea
+    id: test-cases
+    attributes:
+      label: Key Test Cases / Scenarios
+    validations:
+      required: false
+  - type: textarea
+    id: definition-of-done
+    attributes:
+      label: Definition of Done
+    validations:
+      required: false

@@ -1,0 +1,25 @@
+name: "Feature"
+description: "A discrete, shippable piece of a Capability."
+title: "[Feature] "
+labels: ["type:feature"]
+body:
+  - type: input
+    id: parent-capability
+    attributes:
+      label: Parent Capability
+      description: "Issue number of the parent Capability (e.g. #2). After creating this issue, also add it as a sub-issue of that Capability via the sidebar."
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What does this feature do, and what user value does it deliver?
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+    validations:
+      required: false

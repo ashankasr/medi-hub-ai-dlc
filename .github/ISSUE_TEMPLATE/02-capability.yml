@@ -1,0 +1,25 @@
+name: "Capability"
+description: "A major piece of functionality that delivers part of an Epic."
+title: "[Capability] "
+labels: ["type:capability"]
+body:
+  - type: input
+    id: parent-epic
+    attributes:
+      label: Parent Epic
+      description: "Issue number of the parent Epic (e.g. #1). After creating this issue, also add it as a sub-issue of that Epic via the sidebar."
+    validations:
+      required: true
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What does this capability cover?
+    validations:
+      required: true
+  - type: textarea
+    id: success-criteria
+    attributes:
+      label: Success Criteria
+    validations:
+      required: false

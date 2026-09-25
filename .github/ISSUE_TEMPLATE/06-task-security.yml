@@ -1,0 +1,31 @@
+name: "Task: Security"
+description: "Security review or hardening work for a User Story."
+title: "[Task][Security] "
+labels: ["task:security"]
+body:
+  - type: input
+    id: parent-story
+    attributes:
+      label: Parent User Story
+      description: "Issue number of the parent User Story (e.g. #4). After creating this issue, also add it as a sub-issue of that story via the sidebar."
+    validations:
+      required: true
+  - type: textarea
+    id: threat-scope
+    attributes:
+      label: Threats / Risks in scope
+      description: What is being reviewed or hardened (e.g. authz, input validation, data handling, dependencies)?
+    validations:
+      required: true
+  - type: textarea
+    id: checklist
+    attributes:
+      label: Security Checklist / Controls
+    validations:
+      required: false
+  - type: textarea
+    id: definition-of-done
+    attributes:
+      label: Definition of Done
+    validations:
+      required: false

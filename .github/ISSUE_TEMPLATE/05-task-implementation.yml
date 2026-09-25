@@ -1,0 +1,30 @@
+name: "Task: Implementation"
+description: "Engineering work to implement a User Story."
+title: "[Task][Impl] "
+labels: ["task:implementation"]
+body:
+  - type: input
+    id: parent-story
+    attributes:
+      label: Parent User Story
+      description: "Issue number of the parent User Story (e.g. #4). After creating this issue, also add it as a sub-issue of that story via the sidebar."
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What needs to be built
+    validations:
+      required: true
+  - type: textarea
+    id: technical-notes
+    attributes:
+      label: Technical Notes / Approach
+    validations:
+      required: false
+  - type: textarea
+    id: definition-of-done
+    attributes:
+      label: Definition of Done
+    validations:
+      required: false

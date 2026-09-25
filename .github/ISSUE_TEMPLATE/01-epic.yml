@@ -1,0 +1,26 @@
+name: "Epic"
+description: "A large body of work spanning multiple capabilities."
+title: "[Epic] "
+labels: ["type:epic"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What is this epic about, and why does it matter?
+    validations:
+      required: true
+  - type: textarea
+    id: outcomes
+    attributes:
+      label: Desired Outcomes / Success Metrics
+      description: How will we know this epic succeeded?
+    validations:
+      required: false
+  - type: textarea
+    id: capabilities
+    attributes:
+      label: Capabilities in scope
+      description: List the Capability issues this epic will be broken into (link them here once created, and add each as a sub-issue via the sidebar).
+    validations:
+      required: false
