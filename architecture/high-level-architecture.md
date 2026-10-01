@@ -363,18 +363,25 @@ _Status: exploratory_
 | Personal data in request/response payloads | Responses may carry personal data through RabbitMQ; decide whether they need encrypting in transit | Production architecture document |
 | Cross-cutting concerns (testing strategy, i18n, accessibility, DevSecOps gates) | Deferred by the project owner | Later discussion |
 
-## 7. Decisions to record as ADRs
+## 7. Architecture Decision Records
 
-Each decision marked **Decided** above should get a short ADR so the reasoning
-stays traceable (intent §2: ADRs). Candidates:
+The reasoning behind the **Decided** items above is recorded in
+[`adr/`](adr/README.md) (intent §2: ADRs). A change to a decided item needs a
+new ADR that supersedes the old one.
 
-1. Monorepo with Nx and npm workspaces
-2. Modular monolith with Aspire, MassTransit and RabbitMQ
-3. Backend patterns: CQRS with MediatR, outbox with Quartz, choreography vs saga orchestration
-4. Database per tenant with a central catalog
-5. Keycloak with AD federation and tenant switching
-6. Application-level encryption of personal data at rest
-7. FHIR facade (rather than a FHIR server), with Subscriptions for authorized partners
-8. Notification providers: Brevo for email, Firebase for push
-9. Authorization: in-app granular permissions with runtime, hospital-configured roles
-10. Next.js and React Native frontends with a shared generated API client
+| ADR | Decision |
+| --- | --- |
+| [0001](adr/0001-monorepo-nx-npm-workspaces.md) | Monorepo with Nx and npm workspaces |
+| [0002](adr/0002-modular-monolith-aspire-masstransit-rabbitmq.md) | Modular monolith with Aspire, MassTransit and RabbitMQ |
+| [0003](adr/0003-backend-internal-patterns.md) | Backend patterns: CQRS with MediatR, outbox with Quartz, choreography vs saga orchestration |
+| [0004](adr/0004-database-per-tenant.md) | Database per tenant with a central catalog |
+| [0005](adr/0005-keycloak-ad-federation-tenant-switching.md) | Keycloak with AD federation and tenant switching |
+| [0006](adr/0006-application-level-encryption.md) | Application-level encryption of personal data at rest |
+| [0007](adr/0007-fhir-facade.md) | FHIR facade (rather than a FHIR server), with Subscriptions for authorized partners |
+| [0008](adr/0008-notification-providers.md) | Notification providers: Brevo for email, Firebase for push |
+| [0009](adr/0009-in-app-granular-authorization.md) | Authorization: in-app granular permissions with runtime, hospital-configured roles |
+| [0010](adr/0010-frontends-shared-generated-api-client.md) | Next.js and React Native frontends with a shared generated API client |
+
+Still to be recorded as ADRs once settled: multi-tenant outbox delivery,
+clinical audit design, and the production hosting decisions (with the
+production architecture document).
