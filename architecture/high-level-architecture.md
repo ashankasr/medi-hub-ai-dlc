@@ -180,7 +180,7 @@ parties** (government systems, other hospitals; e.g. patient repatriation):
 
 Profiles (IPS, HL7 Europe, national profiles), operations and search parameters
 are added as requirements need them. The `CapabilityStatement` publishes exactly
-what is supported. The first target country is **open**.
+what is supported. The first target country is **Sweden** (see intent §3).
 
 ### 3.5 Encryption flow
 
@@ -357,7 +357,8 @@ _Status: exploratory_
 | Fields that get application-level encryption | Trade-off against SQL search and EMPI matching | Requirement grooming, per field |
 | Permission-gated fields and categories | Which fields or data categories (e.g. mental health, HIV status) are visible to which users | Open for discussion during requirement grooming |
 | Multi-tenant outbox delivery | Outbox processor across many tenant databases, without double delivery across API replicas | Deferred: revisit with project owner, then prototype and ADR |
-| First target country | National FHIR profiles, government systems, legal retention periods | Discovery |
+| First target country | National FHIR profiles, government systems, legal retention periods | Answered: **Sweden** ([discovery 2026-10-02](../discovery/sessions/2026-10-02-platform-scope-and-first-slice.md), intent §3) |
+| Lab and radiology scope | Intent §4 now plans laboratory and radiology for a later phase, which conflicts with "Imaging (PACS/DICOM), lab and device integration: Out of scope" in §1 | New ADR superseding that driver before the later phase starts (discovery Q-010) |
 | AD in development | OpenLDAP stand-in vs Keycloak local users | Decide at bootstrap |
 | Clinical audit design | Model, storage and what counts as an auditable read | Separate discussion |
 | Personal data in request/response payloads | Responses may carry personal data through RabbitMQ; decide whether they need encrypting in transit | Production architecture document |
