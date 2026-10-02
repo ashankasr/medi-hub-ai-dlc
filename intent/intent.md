@@ -46,3 +46,33 @@ The project should provide a realistic environment to practice:
 - Human approval and governance around AI-generated changes.
 
 The system should eventually represent the complexity expected from a real enterprise healthcare platform rather than a simple CRUD application.
+
+---
+
+## 3. Context
+
+_Status: emerging_
+
+The product is a **hospital group management system** for a private healthcare provider in Sweden: one legal entity (one care provider under Swedish law) operating several hospitals. Each hospital is a tenant with its own database; hospital-group functions that need aggregated information are still to be discovered. Sweden is the first and, for now, only country supported; an EU-wide product is the long-term direction.
+
+Patient data is governed by GDPR and the Swedish Patient Data Act (PDL). The platform models the group, its hospitals and their care units. It deliberately does not support every organisational form — for example several care providers in one deployment, or record sharing with other care providers.
+
+---
+
+## 4. Platform Scope
+
+_Status: emerging_
+
+In scope over time: patient administration, outpatient scheduling, EMR, clinical documentation, orders and results, medication and pharmacy, emergency department, theatre, billing, claims, patient portal, management reporting.
+
+Laboratory and radiology are planned for a later phase.
+
+---
+
+## 5. First Slice
+
+_Status: settled_
+
+The first slice is something a user can feel rather than an architecture proof: **a receptionist checks in a walk-in patient with a personnummer at an outpatient clinic, and the patient appears on the clinic's waiting list.** Patient details come from a stubbed population register using official test identities. Patients with protected personal data are stopped and handled manually. Funding and fees are not part of the slice. The slice runs on test identities only; serving real patients in production is outside it.
+
+Later slices follow the agreed order: hard cases at the same desk, ED arrival, ambulance pre-registration, booked check-in, self check-in.
