@@ -36,7 +36,9 @@ coding, governance). The process is part of the deliverable, so follow the conve
 
 Hospital group system for one private care provider in **Sweden** (first and only country for now;
 EU is the long-run direction). One deployment per hospital group; **tenant = hospital**, **database
-per tenant** plus a central catalog. GDPR and Swedish PDL apply. First slice (intent §5): a receptionist
+per tenant** plus a central catalog. GDPR and Swedish PDL apply. Each hospital keeps its own patient records; with the patient's consent, a hospital can
+request a patient's information from another hospital of the group through a group-level patient index (no central
+copy), and patient information is shared with national services (NPÖ, National Medication List). First slice (intent §5): a receptionist
 checks in a walk-in patient with a personnummer at an outpatient clinic, against a stubbed population
 register filled with Skatteverket test identities; protected identities stop check-in.
 
@@ -84,4 +86,5 @@ register filled with Skatteverket test identities; protected identities stop che
 
 Tracked in `architecture/high-level-architecture.md` §6 and `discovery/questions.md`: production
 environment document, multi-tenant outbox delivery, clinical audit design, group-level central data,
-lab/radiology scope conflict (Q-010), PDL interpretation (Q-004).
+lab/radiology scope conflict (Q-010), PDL interpretation (Q-004), cross-hospital consent model (Q-013), sharing
+with NPÖ and the National Medication List (Q-014).

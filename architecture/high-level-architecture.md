@@ -353,7 +353,7 @@ _Status: exploratory_
 | Item | Why it matters | Where it gets resolved |
 | --- | --- | --- |
 | Production environment | Hosting topology, networking, HA/DR, RabbitMQ persistence and clustering on Container Apps, cost | Separate production architecture document |
-| Group-level central data | Decides what lives in the catalog vs tenant databases; shapes EMPI | Requirement grooming |
+| Group-level central data | Decides what lives in the catalog vs tenant databases; shapes EMPI | Partly answered: a group-level patient index holds which hospitals know a patient, no central copy of details ([grooming 2026-10-06](../discovery/sessions/2026-10-06-groom-patient-administration.md) G20). Other group-level data: requirement grooming |
 | Fields that get application-level encryption | Trade-off against SQL search and EMPI matching | Requirement grooming, per field |
 | Permission-gated fields and categories | Which fields or data categories (e.g. mental health, HIV status) are visible to which users | Open for discussion during requirement grooming |
 | Multi-tenant outbox delivery | Outbox processor across many tenant databases, without double delivery across API replicas | Deferred: revisit with project owner, then prototype and ADR |
