@@ -20,3 +20,5 @@ equivalent.
 | Consent (*samtycke*) | In this project, the patient's advance permission for one hospital of the group to access information held by another. Details open (Q-013). | G21 |
 | NPÖ (*Nationell patientöversikt*) | National Patient Overview: national service through which care providers can read each other's records with the patient's consent. | G22 |
 | National Medication List (*Nationella läkemedelslistan*) | National register of a patient's prescribed and dispensed medicines, shared across care providers. | G22 |
+| Tilltalsnamn | The given name a person goes by, marked in the population register among their given names. Shown on the waiting list. | G24 |
+| Orphaned registration | A patient created at a hospital but never checked in. Kept in S1; cleanup rule open (Q-015). | G26 |

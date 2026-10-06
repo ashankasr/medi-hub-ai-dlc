@@ -7,7 +7,7 @@
 - **Epic:** #4 Patient Administration
 - **Builds on:** [2026-10-02 platform scope and first slice](2026-10-02-platform-scope-and-first-slice.md)
   (D12 candidate map C1–C7, D13 first slice, D14 test identities, D17 slice order, D21 stub in production)
-- **Resolves questions:** Q-011 partly (G20). Raises Q-013, Q-014
+- **Resolves questions:** Q-011 partly (G20). Raises Q-013, Q-014, Q-015
 
 ## Scope
 
@@ -116,6 +116,21 @@ consent, an index-only central place and the intent §3 change.
   (NPÖ) and the National Medication List. This **supersedes D8's exclusion** of record sharing with
   other care providers (sammanhållen journalföring, NPÖ). Details are open in Q-014.
 
+**Review of C2 (same day)**
+
+- **G23.** Creating a patient and checking them in are **two separate steps**: "Create patient" (US-4),
+  then check-in (US-7).
+- **G24.** The given name the patient goes by (*tilltalsnamn*) is **stored, encrypted like the other
+  names**, and the **waiting list shows it with the surname**. If the register marks none, the first
+  given name is used. *(Fallback: Claude's domain knowledge.)* This extends G9 and G15.
+- **G25.** If two receptionists create the same patient at the same moment, the second gets **"already
+  registered"**. The personnummer's blind index is unique within a hospital.
+- **G26.** A patient who is created but never checked in (an **orphaned registration**) is **kept in
+  S1**. Cleanup comes later in C6, as an automatic rule rather than a manual search, once Q-015 settles
+  whether such a registration may be deleted. The user first asked for "another US to find [isolated]
+  patient to remove from db". Claude raised PDL retention and the audit trail pointing at the patient
+  id, and the user accepted the suggestion: "I will your suggestions."
+
 ## Assumptions accepted
 
 None new. A2 (PDL interpretation) still stands and underlies G11 and G13.
@@ -135,7 +150,11 @@ None new. A2 (PDL interpretation) still stands and underlies G11 and G13.
   a customer agreement and a SITHS function certificate, and they use Inera's service contracts rather
   than plain FHIR. — matters for the Interoperability module, ADR-0007 (FHIR facade) and the roadmap.
 
-Related open items: Q-004 (PDL interpretation) affects G11, G13 and G21. Q-012 (real patients while
+- **Q-015** Is a registration without any care contact (an orphaned registration, G26) part of the
+  patient record under PDL, and how long must it be kept? — decides whether C6's cleanup rule deletes,
+  anonymises or keeps it, and how the audit trail stays readable.
+
+Related open items: Q-004 (PDL interpretation) affects G11, G13, G21 and Q-015. Q-012 (real patients while
 the stub is in production) affects G8 and the protected-identity guard.
 
 ## Candidate requirements
@@ -182,8 +201,15 @@ Features C1–C7 as in D12. Created now: C1, C2, C4 and C5, scoped to S1.
 
 - **US-4 Create a patient from register data.** As a receptionist, I want to confirm the register data
   and create the patient, so that the hospital has a correct record from the start.
-  - No patient is created without the receptionist's confirmation. Cancelling stores nothing.
-  - The stored fields and their encryption follow G9, and the personnummer is stored as `YYYYMMDD-NNNN`.
+  - No patient is created without the receptionist's confirmation ("Create patient"). Cancelling
+    stores nothing. Check-in is a separate step (US-7, G23).
+  - Stored, all encrypted: personnummer (as `YYYYMMDD-NNNN`, with a blind index), given names, the given
+    name the patient goes by, surname and registered address (G9, G24). Date of birth and sex are
+    derived from the personnummer.
+  - If the register marks no given name in use, the first given name is used (G24).
+  - If the same patient is created at the same moment from two desks, the second gets "already
+    registered" and no duplicate is created (G25).
+  - A patient created but not checked in stays registered (G26).
   - Verified end to end with Skatteverket test data.
 
 ### Feature C4 — Protected identity & privacy
@@ -217,8 +243,8 @@ Features C1–C7 as in D12. Created now: C1, C2, C4 and C5, scoped to S1.
   - Requires `reception.checkin` (G17).
 - **US-8 See and manage the clinic's waiting list.** As a receptionist, I want to see who is waiting at
   my clinic and remove patients who have been called in or left, so that the list stays accurate.
-  - The list shows today's arrivals for the selected clinic: name, personnummer, arrival time and
-    waiting time, ordered by arrival (G15).
+  - The list shows today's arrivals for the selected clinic: the given name the patient goes by and
+    surname, personnummer, arrival time and waiting time, ordered by arrival (G15, G24).
   - Removing a patient requires a reason, *called in* or *left without being seen*, stored on the
     check-in (G16).
   - A removed patient disappears from the list.
@@ -243,6 +269,9 @@ test identities, some marked protected.
 - A central copy of patient information — the user chose an index only (G20).
 - PDL's default inside one care provider (visible unless the patient blocks) — the user chose opt-in
   consent (G21).
+- One step, "Create and check in" — the user chose two separate steps (G23).
+- A story in S1 to find and delete orphaned registrations (the user's idea) — the user accepted Claude's
+  suggestion to keep them in S1 and clean up automatically in C6 once Q-015 is answered (G26).
 
 ## Intent impact
 
