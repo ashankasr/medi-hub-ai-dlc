@@ -44,6 +44,9 @@ were explicitly parked. Architecture choices were out of scope.
   added later without a rewrite. The system "doesn't need to support all the possibilities".
   **Not supported:** several care providers per deployment; a region as the customer; mixed funding
   within a hospital; record sharing with other care providers (sammanhållen journalföring, NPÖ).
+  *Record sharing with other care providers superseded by G22 in
+  [2026-10-06](2026-10-06-groom-patient-administration.md): information is shared with NPÖ and the
+  National Medication List.*
 - **D9.** A hospital is either region-funded or private-pay, never both. *Parked by D20 together with
   funding (D11).*
 - **D10.** Walk-in patients can arrive at many places in a hospital.

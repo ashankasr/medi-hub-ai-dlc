@@ -16,3 +16,7 @@ equivalent.
 | Protected personal data (*skyddade personuppgifter*) | Population-register marking for people whose details, especially address, must not be disclosed. | D13 |
 | Test personnummer | Personnummer published by Skatteverket for testing; used in the stubbed register. | D14 |
 | Walk-in | A patient who arrives without an appointment. | D5, D10 |
+| Group-level patient index (EMPI) | Central index of which hospitals of the group know a patient. Holds no copy of patient details; a hospital requests details from the hospital that holds them. | G20 |
+| Consent (*samtycke*) | In this project, the patient's advance permission for one hospital of the group to access information held by another. Details open (Q-013). | G21 |
+| NPÖ (*Nationell patientöversikt*) | National Patient Overview: national service through which care providers can read each other's records with the patient's consent. | G22 |
+| National Medication List (*Nationella läkemedelslistan*) | National register of a patient's prescribed and dispensed medicines, shared across care providers. | G22 |

@@ -7,7 +7,7 @@
 - **Epic:** #4 Patient Administration
 - **Builds on:** [2026-10-02 platform scope and first slice](2026-10-02-platform-scope-and-first-slice.md)
   (D12 candidate map C1–C7, D13 first slice, D14 test identities, D17 slice order, D21 stub in production)
-- **Resolves questions:** none
+- **Resolves questions:** Q-011 partly (G20). Raises Q-013, Q-014
 
 ## Scope
 
@@ -83,14 +83,60 @@ recognition) stay on the candidate map and get no issues yet.
 - **G17.** S1 uses **one coarse permission, `reception.checkin`**, covering everything in the slice.
   It is split later when another role needs only part of it. A seeded *Receptionist* role holds it (G2).
 
+**Review of C1 (same day)**
+
+- **G18.** The register's **protection check runs before any patient details are shown**. This applies
+  both to a returning patient's stored data (US-2) and to register data shown for confirmation (US-3).
+  Without it, a protected patient's old address would be on screen before the guard fires (G11).
+
+**Patients across the group's hospitals**
+
+Raised while reviewing US-2, when a patient registered at one hospital walks into another. Claude
+described standard practice (its domain knowledge, to verify under Q-004): within one care provider,
+hospitals usually see a patient's history, under care relationship, logging and blocking; across care
+providers, Sweden shares through national services such as NPÖ with the patient's consent. The user:
+"I think each hospital needs to have their own record. However, if the inner same hospital group one
+hospital can request information from another hospital but in that case there needs to be somewhere
+central place that they can refer to information but the patient should have given certain consent to
+access information from another hospital […] but also this information needs to be shared with other
+like third party services such as national patient overview, national medical medication list". The
+user then approved Claude's restatement ("I am approng your statements there"), including opt-in
+consent, an index-only central place and the intent §3 change.
+
+- **G19.** **Each hospital keeps its own patient record.** In S1, a patient who visits two hospitals
+  of the group is registered separately at each one. Linking them is C7.
+- **G20.** Within the group, a hospital **can request a patient's information from another hospital**.
+  A **group-level patient index** (the "central place") records which hospitals know the patient. The
+  details stay in each hospital's database and are requested from the hospital that holds them. The
+  index does not hold a central copy. This partly answers Q-011.
+- **G21.** Access to another hospital's information needs the **patient's consent, given in advance
+  (opt-in)**. This is stricter than Claude's description of the PDL default inside one care provider,
+  which is visible-unless-blocked (A2). Details are open in Q-013.
+- **G22.** Patient information is **shared with national services**: the National Patient Overview
+  (NPÖ) and the National Medication List. This **supersedes D8's exclusion** of record sharing with
+  other care providers (sammanhållen journalföring, NPÖ). Details are open in Q-014.
+
 ## Assumptions accepted
 
 None new. A2 (PDL interpretation) still stands and underlies G11 and G13.
 
 ## Open questions
 
-None new. Related open items: Q-004 (PDL interpretation) affects G11 and G13. Q-012 (real patients
-while the stub is in production) affects G8 and the protected-identity guard.
+- **Q-011** Group-level functions and data — *partly answered by G20*: a group-level patient index
+  holds which hospitals know a patient, with no central copy of details. Other group-level functions
+  (aggregated reporting, terminology, staff directory) are still open.
+- **Q-013** How does a patient give, scope and withdraw consent for cross-hospital access (G21)? This
+  covers where consent is given (desk, app, BankID), whether it applies to all hospitals or each one,
+  how long it lasts, and what happens in an emergency when the patient can't consent
+  (break-the-glass). It also covers how consent relates to PDL blocking. — matters because it shapes C7,
+  EMR and the Access module's consent enforcement (ADR-0009).
+- **Q-014** Which information is shared with NPÖ and the National Medication List, from which phase,
+  and how (G22)? *Claude's domain knowledge, to verify with Inera:* both are Inera services that need
+  a customer agreement and a SITHS function certificate, and they use Inera's service contracts rather
+  than plain FHIR. — matters for the Interoperability module, ADR-0007 (FHIR facade) and the roadmap.
+
+Related open items: Q-004 (PDL interpretation) affects G11, G13 and G21. Q-012 (real patients while
+the stub is in production) affects G8 and the protected-identity guard.
 
 ## Candidate requirements
 
@@ -112,7 +158,10 @@ Features C1–C7 as in D12. Created now: C1, C2, C4 and C5, scoped to S1.
   - Everywhere in S1, a personnummer is displayed only as `YYYYMMDD-NNNN`.
 - **US-2 Find a patient already registered at the hospital.** As a receptionist, I want a returning
   patient to be found by personnummer, so that they are registered only once.
-  - Exact match through the blind index, within the current hospital only (tenant from token).
+  - Exact match through the blind index, within the current hospital only (tenant from token). A
+    patient known only at another hospital of the group is treated as new here (G19).
+  - The protection check runs before any stored details are shown (G18). If the patient is protected,
+    US-5 applies.
   - A found patient is shown (name, personnummer) and not re-created. A repeat check-in of the same
     test personnummer leaves one patient.
   - Stored data is shown without a register refresh (G7).
@@ -123,7 +172,9 @@ Features C1–C7 as in D12. Created now: C1, C2, C4 and C5, scoped to S1.
   - The register is asked only when the patient is not found at the hospital.
   - The register is the stub, seeded with Skatteverket test personnummer (D14). Some of them are
     marked protected, as synthetic data for testing the guard.
-  - The register data is shown for confirmation, and that view is access-logged (G13).
+  - The protection check comes first (G18). If the patient is protected, US-5 applies and no register
+    data is shown.
+  - Otherwise the register data is shown for confirmation, and that view is access-logged (G13).
   - Not found in the register: check-in stops with the manual-routine message, nothing is stored, and
     a stop is recorded (G8, G12).
 
@@ -187,9 +238,15 @@ test identities, some marked protected.
 - Deleting an existing protected patient's name and address — the user chose keep but hide (G11).
 - Tracking invalid personnummer input as a stop — not selected (G12).
 - One-click removal from the waiting list without a reason — the user chose to require a reason (G16).
+- Recognising a patient across the group's hospitals already in S1 — the user chose separate records
+  per hospital, linked later (G19, G20).
+- A central copy of patient information — the user chose an index only (G20).
+- PDL's default inside one care provider (visible unless the patient blocks) — the user chose opt-in
+  consent (G21).
 
 ## Intent impact
 
 | Section | Change | Status transition | Applied? |
 | --- | --- | --- | --- |
-| — | None. Grooming refines S1 inside §5 without changing it. | — | — |
+| §5 First Slice | None. Grooming refines S1 inside §5 without changing it. | — | — |
+| §3 Context | Replace "does not support … record sharing with other care providers" with per-hospital records, consent-based requests between the group's hospitals through a group-level index, and sharing with national services (NPÖ, National Medication List) (G19–G22) | emerging -> emerging | yes |
