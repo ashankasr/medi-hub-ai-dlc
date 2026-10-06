@@ -55,7 +55,7 @@ _Status: emerging_
 
 The product is a **hospital group management system** for a private healthcare provider in Sweden: one legal entity (one care provider under Swedish law) operating several hospitals. Each hospital is a tenant with its own database; hospital-group functions that need aggregated information are still to be discovered. Sweden is the first and, for now, only country supported; an EU-wide product is the long-term direction.
 
-Patient data is governed by GDPR and the Swedish Patient Data Act (PDL). The platform models the group, its hospitals and their care units. It deliberately does not support every organisational form — for example several care providers in one deployment, or record sharing with other care providers.
+Patient data is governed by GDPR and the Swedish Patient Data Act (PDL). The platform models the group, its hospitals and their care units. Each hospital keeps its own patient records; with the patient's consent, a hospital can request a patient's information from another hospital of the group through a group-level patient index. Patient information is shared with national services such as the National Patient Overview (NPÖ) and the National Medication List. The platform deliberately does not support every organisational form — for example several care providers in one deployment.
 
 ---
 
