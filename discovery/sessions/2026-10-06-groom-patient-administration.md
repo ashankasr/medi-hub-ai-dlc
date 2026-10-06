@@ -131,6 +131,52 @@ consent, an index-only central place and the intent §3 change.
   patient to remove from db". Claude raised PDL retention and the audit trail pointing at the patient
   id, and the user accepted the suggestion: "I will your suggestions."
 
+**Review of C4 (same day)**
+
+The term "protected" caused confusion. The user read it as "all patient information is protected by
+default", which is a different idea from Skatteverket's protected-identity status. Claude separated the
+two: **privacy for every patient** (encryption G9, access logging G13, the receptionist sees basic
+information) and **protected identity**, a status the population register marks for a small group of
+people, usually because they are in danger. The user: "Please treat the protected and privacy option
+both in this system". Claude regrouped the open questions with a recommendation for each, and the user
+replied: "I approve all of your recommendations".
+
+*Privacy for every patient*
+
+- **G27.** Every checked-in patient gets a **queue number**. **Screens the public can see show only the
+  queue number, never name or personnummer.** This applies to **all patients**, not only protected ones.
+  The receptionist's list shows the queue number next to the name. The user: "It should be for all
+  patients". The **waiting-room screen is not part of S1** ("Waiting room screen is not part of S1"),
+  and it becomes a later story under C5.
+- **G28.** S1 **assigns the queue number at check-in** and shows it on the receptionist's list. The
+  receptionist tells the patient their number.
+- **G29.** The **audit log is built as a separate platform issue**, and US-6 waits for it. Audit serves
+  every module (architecture §1: "a platform capability, not per-module code"), so one story shouldn't
+  shape it. Its design is the open item "clinical audit design" in architecture §6.
+
+*Protected identity*
+
+- **G30.** In S1, **check-in stops** for a patient with protected identity, and the receptionist follows
+  the manual routine. This confirms D13 and intent §5. Proper handling comes in S2 (D17).
+- **G31.** G11 is confirmed: a patient registered before being marked is kept, flagged, and their name
+  and address are never shown again.
+- **G32.** If the register later **stops marking** a flagged patient as protected, **the flag stays** until
+  a person removes it (from S2 on). Removing it by mistake is the dangerous direction.
+- **G33.** If a patient is **already on today's list** when protection is discovered (for example at a
+  second clinic), every list showing them displays **"Protected identity — see manual routine"** instead
+  of their name and personnummer.
+- **G34.** **Direction for S2** (recorded now, not built in S1): a protected patient is checked in like
+  everyone else with a queue number; the receptionist sees their name and personnummer **with a
+  warning**; their **address is never shown**. This was the user's own idea ("system user should ne able
+  to see basic information"), and it replaces the S1 stop when S2 is groomed.
+
+*How it is built*
+
+- **G35.** US-5 is **safety-relevant**. Its issue and every PR implementing it carry a `safety-relevant`
+  label, and a PR **cannot be merged without the user's explicit approval**. The PR description must
+  list test evidence showing that a protected patient's details never appear, using the protected test
+  identities. This is a **development-process rule**, not an app feature.
+
 ## Assumptions accepted
 
 None new. A2 (PDL interpretation) still stands and underlies G11 and G13.
@@ -214,20 +260,24 @@ Features C1–C7 as in D12. Created now: C1, C2, C4 and C5, scoped to S1.
 
 ### Feature C4 — Protected identity & privacy
 
-- **US-5 Stop check-in for a patient with protected personal data.** ⚠ **Safety-relevant: needs a human
-  approval gate.** As a receptionist, I want check-in to stop when a patient's identity is protected, so
+- **US-5 Stop check-in for a patient with protected personal data.** ⚠ **Safety-relevant (G35): the
+  user approves every PR, with test evidence.** As a receptionist, I want check-in to stop when a patient's identity is protected, so
   that their name and whereabouts are not exposed by the system.
   - The register check runs on every check-in, for new and existing patients (G7).
   - New patient: nothing personal is stored, no register details are displayed, and the manual-routine
     message is shown (G10).
   - Existing patient: the record is flagged as protected, and its name and address are never shown again
-    in lookups or on the waiting list (G11).
+    in lookups or on the waiting list (G11, G31).
+  - A patient already on today's list when protection is discovered is shown on every list as
+    "Protected identity — see manual routine" (G33).
+  - The flag is never removed automatically, even if the register stops marking the patient (G32).
   - A stop is recorded without patient data (G12).
   - Verified with test identities marked protected in the stub.
 - **US-6 Access-log patient record views.** As the care provider, I want every view of a patient record
   logged, so that access can be reviewed as PDL requires (A2).
   - Lookup results and register-confirmation views are logged with who, when, which patient (by id)
-    and which care unit, through the platform audit (G13).
+    and which care unit, through the platform audit (G13). The audit log itself is a separate platform
+    issue that this story waits for (G29).
   - Waiting-list views are not logged per patient.
   - Application logs and traces contain no decrypted personal data.
   - Verified by inspecting the audit trail.
@@ -238,13 +288,19 @@ Features C1–C7 as in D12. Created now: C1, C2, C4 and C5, scoped to S1.
   the identified patient to a clinic, so that the clinic knows they have arrived.
   - The receptionist picks a clinic from the hospital's seeded outpatient clinics, and the choice is
     remembered per user (G14).
-  - The check-in records the patient, the clinic and the arrival time.
+  - The check-in records the patient, the clinic, the arrival time and a **queue number** (G28). The
+    receptionist tells the patient their number.
   - A patient already waiting at that clinic cannot be checked in there again (G14).
   - Requires `reception.checkin` (G17).
 - **US-8 See and manage the clinic's waiting list.** As a receptionist, I want to see who is waiting at
   my clinic and remove patients who have been called in or left, so that the list stays accurate.
-  - The list shows today's arrivals for the selected clinic: the given name the patient goes by and
-    surname, personnummer, arrival time and waiting time, ordered by arrival (G15, G24).
+  - The list shows today's arrivals for the selected clinic: queue number, the given name the patient
+    goes by and surname, personnummer, arrival time and waiting time, ordered by arrival (G15, G24,
+    G28).
+  - A patient found to be protected after check-in is shown as "Protected identity — see manual
+    routine" (G33).
+  - This is the receptionist's list. A public waiting-room screen (queue numbers only, G27) is a later
+    story.
   - Removing a patient requires a reason, *called in* or *left without being seen*, stored on the
     check-in (G16).
   - A removed patient disappears from the list.
@@ -272,6 +328,9 @@ test identities, some marked protected.
 - One step, "Create and check in" — the user chose two separate steps (G23).
 - A story in S1 to find and delete orphaned registrations (the user's idea) — the user accepted Claude's
   suggestion to keep them in S1 and clean up automatically in C6 once Q-015 is answered (G26).
+- Building a minimal audit log inside US-6 — the user chose a separate platform issue (G29).
+- Checking in protected patients already in S1 — the user kept the S1 stop and recorded that design as
+  the S2 direction (G30, G34).
 
 ## Intent impact
 
