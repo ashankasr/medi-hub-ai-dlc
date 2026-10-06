@@ -18,7 +18,7 @@ coding, governance). The process is part of the deliverable, so follow the conve
 | `discovery/glossary.md` | Domain terms, including Swedish ones (personnummer, vårdenhet, PDL…). |
 | `architecture/high-level-architecture.md` | Stack and dev environment. Items marked **Decided** or **Proposed**. |
 | `architecture/adr/` | ADR-0001…0010 plus index and template. Accepted ADRs are never rewritten; supersede them. |
-| `.claude/skills/` | `discovery` and eight `dotnet-backend-modular-monolith-*` skills. Use them. |
+| `.claude/skills/` | `discovery`, `sync-epics` (keeps Epics in step with the repo) and eight `dotnet-backend-modular-monolith-*` skills. Use them. |
 | `.github/ISSUE_TEMPLATE/` | Epic → Capability → Feature → User Story → Task (implementation/security/test/docs). |
 
 ## Working rules
