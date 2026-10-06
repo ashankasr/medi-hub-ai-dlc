@@ -13,7 +13,7 @@ equivalent.
 | Personnummer | Swedish personal identity number. | session |
 | Samordningsnummer | Coordination number for people without a personnummer. | session |
 | Reserve number (*reservnummer*) | Temporary local identity for a patient whose identity is unknown or who has no Swedish number. | session |
-| Protected personal data (*skyddade personuppgifter*) | Population-register marking for people whose details, especially address, must not be disclosed. | D13 |
+| Protected personal data (*skyddade personuppgifter*), also "protected identity" | Population-register marking for a small group of people, usually in danger, whose details, especially address, must not be disclosed. **Not** the same as the privacy every patient gets (encryption, access logging). | D13, G30 |
 | Test personnummer | Personnummer published by Skatteverket for testing; used in the stubbed register. | D14 |
 | Walk-in | A patient who arrives without an appointment. | D5, D10 |
 | Group-level patient index (EMPI) | Central index of which hospitals of the group know a patient. Holds no copy of patient details; a hospital requests details from the hospital that holds them. | G20 |
@@ -22,3 +22,5 @@ equivalent.
 | National Medication List (*Nationella läkemedelslistan*) | National register of a patient's prescribed and dispensed medicines, shared across care providers. | G22 |
 | Tilltalsnamn | The given name a person goes by, marked in the population register among their given names. Shown on the waiting list. | G24 |
 | Orphaned registration | A patient created at a hospital but never checked in. Kept in S1; cleanup rule open (Q-015). | G26 |
+| Queue number | Number given to every patient at check-in. Screens the public can see show only this number, never name or personnummer. | G27, G28 |
+| Safety-relevant | Label for work where a defect could harm a patient. Its PRs need the user's explicit approval with test evidence before merge. A development rule, not an app feature. | G35 |
